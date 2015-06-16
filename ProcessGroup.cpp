@@ -1,4 +1,5 @@
 #include "ProcessGroup.h"
+#include <sys/time.h>
 #include <sys/types.h>
 #include <sys/syscall.h>
 #include <sys/wait.h>
@@ -71,7 +72,13 @@ void ProcessGroup::getTotalMessage(char* buffer, int bufferSize) {
 	}
 	int avgSharedLibrary = totalSharedLibrary / this->getSize();
 
-	snprintf(buffer, bufferSize, "%d %d %d %d %d",
+	struct timeval tv;
+	long long timestamp_us;
+	gettimeofday(&tv, NULL);
+	timestamp_us = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
+
+	snprintf(buffer, bufferSize, "%lld %d %d %d %d %d",
+			timestamp_us, 
 			totalText, totalData, totalStack, avgSharedLibrary, totalPss);
 	return;
 }
