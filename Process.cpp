@@ -123,9 +123,10 @@ void Process::getPssFromSmaps() {
 	int total_private_clean = 0;
 	int total_private_dirty = 0;
 	while(fgets(buffer, 1024, fp)) {
-		const int LINE_PER_OBJECT = 15;
+		const int LINE_PER_OBJECT = 19;
 		int line_idx = line_num % LINE_PER_OBJECT;
 
+//    printf("%d: %s \n", line_idx, buffer);
 		switch(line_idx) {
 			case 0:		// Header : Address, Permissions, Offset, Time, Size, Object Name
 				{
@@ -144,14 +145,18 @@ void Process::getPssFromSmaps() {
 						tok_idx++;
 					}
 					// EXCEPTION If there is not object name for the object, set default object name
-					if(read_object_name == NULL) {
-						const char DEFAULT_NAME[] = "unknown";
+          int length = strlen(read_object_name) + 1;
+					if(read_object_name == NULL || length <= 2) {
+						const char DEFAULT_NAME[] = "anonymous";
 						read_object_name = new char[strlen(DEFAULT_NAME) + 1];
 						memcpy(read_object_name, DEFAULT_NAME, strlen(DEFAULT_NAME) + 1);
 					}
 					// HERE Read object name
 					// not use for present
-					// TODO set object's name
+          for(int j=0; j<length; j++) {
+            if(read_object_name[j] == '\n') read_object_name[j] = ' ';
+          }
+          printf("%s ", read_object_name);
 				}
 				break;
 			case 1:		// Size
@@ -204,6 +209,7 @@ void Process::getPssFromSmaps() {
 						this->mInitFailed = 1;
 						return;
 					}
+          printf("%d\n", read_object_pss);
 				}
 				break;
 			case 4:		// Shared Clean
@@ -266,18 +272,27 @@ void Process::getPssFromSmaps() {
 				break;
 			case 10:	// AnonHughPages
 				break;
-			case 11:	// Swap
+      case 11:  // Shared Huge TLB
+        break;
+      case 12:  // Private Huge TLB
+        break;
+			case 13:	// Swap
 				break;
-			case 12:	// KernelPageSize
+      case 14:  // Swap PSS
+        break;
+			case 15:	// KernelPageSize
 				break;
-			case 13:	// MMUPagesSize
+			case 16:	// MMUPagesSize
 				break;
-			case 14:	// Locked
+			case 17:	// Locked
 				break;
+      case 18:  // VM Flags
+        break;
 		}
 		line_num++;
 	}
 	// set rss & pss of the pid to process snapshot
 	this->mPss = total_pss;
+  printf("\n\n");
 	return;
 }
