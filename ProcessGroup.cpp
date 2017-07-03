@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+int ProcessGroup::sMaxPss = 0;
+
 ProcessGroup::ProcessGroup(const char* process_name) {
 	// If constructor is done, it contains 'Process'es.
 	// Each Process has attributes which has already set,
@@ -77,9 +79,12 @@ void ProcessGroup::getTotalMessage(char* buffer, int bufferSize) {
 	gettimeofday(&tv, NULL);
 	timestamp_us = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
 
-	snprintf(buffer, bufferSize, "%lld %d %d %d %d %d",
+  if(totalPss > sMaxPss)
+    sMaxPss = totalPss;
+
+	snprintf(buffer, bufferSize, "%lld %d %d %d %d %d %d",
 			timestamp_us, 
-			totalText, totalData, totalStack, avgSharedLibrary, totalPss);
+			totalText, totalData, totalStack, avgSharedLibrary, totalPss, sMaxPss);
 	return;
 }
 

@@ -156,7 +156,7 @@ void Process::getPssFromSmaps() {
           for(int j=0; j<length; j++) {
             if(read_object_name[j] == '\n') read_object_name[j] = ' ';
           }
-          printf("%s ", read_object_name);
+          //printf("%s ", read_object_name);
 				}
 				break;
 			case 1:		// Size
@@ -209,7 +209,7 @@ void Process::getPssFromSmaps() {
 						this->mInitFailed = 1;
 						return;
 					}
-          printf("%d\n", read_object_pss);
+          //printf("%d\n", read_object_pss);
 				}
 				break;
 			case 4:		// Shared Clean
@@ -293,6 +293,5 @@ void Process::getPssFromSmaps() {
 	}
 	// set rss & pss of the pid to process snapshot
 	this->mPss = total_pss;
-  printf("\n\n");
 	return;
 }

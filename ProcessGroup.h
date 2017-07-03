@@ -10,6 +10,8 @@ public:
 	const char* getProcessName();
 	void getTotalMessage(char* buffer, int bufferSize);
 
+  static int sMaxPss;
+
 private:
 	Process& getProcess(int index);
 
