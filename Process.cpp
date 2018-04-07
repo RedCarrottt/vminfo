@@ -106,10 +106,10 @@ void Process::getPssFromSmaps() {
   int total_private_clean = 0;
   int total_private_dirty = 0;
 
+  int expected_header = 1;
   while(fgets(buffer, 1024, fp)) {
     const int LINE_PER_OBJECT = 19;
     int line_idx = line_num % LINE_PER_OBJECT;
-    int expected_header = 1;
 
     if(expected_header == 1) {
       // Header : Address, Permissions, Offset, Time, Size, Object Name
@@ -117,12 +117,10 @@ void Process::getPssFromSmaps() {
       char* tok = strtok(buffer, " ");
       char* read_object_name = NULL;
       while(tok != NULL) {
-        switch(tok_idx) {
-          case 5:
-            // Read object name
-            read_object_name = new char[strlen(tok) + 1];
-            memcpy(read_object_name, tok, strlen(tok) + 1);
-            break;
+        if(tok_idx == 5) {
+          // Read object name
+          read_object_name = new char[strlen(tok) + 1];
+          memcpy(read_object_name, tok, strlen(tok) + 1);
         }
         tok = strtok(NULL, " ");
         tok_idx++;
@@ -166,7 +164,11 @@ void Process::getPssFromSmaps() {
             tok = strtok(NULL, " "); tok_idx++;
             total_private_dirty += atoi(tok);
             break;
-          }
+          } else if(strncmp(title, "VmFlags", 7) == 0) {
+            // VmFlags
+            expected_header = 1;
+            break;
+          } 
         }
         tok = strtok(NULL, " ");
         tok_idx++;
