@@ -67,10 +67,6 @@ void ProcessGroup::getTotalMessage(char* buffer, int bufferSize) {
 		totalPss += p->getPss();
 		int total = p->getText() + p->getData() + p->getStack() + p->getSharedLibrary();
 
-		// LOGGING
-//		printf("%d: %d %d %d %d = %d\n", 
-//				p->getPid(), p->getText(), p->getData(), 
-//				p->getStack(), p->getSharedLibrary(), total);
 	}
 	int avgSharedLibrary = totalSharedLibrary / this->getSize();
 
