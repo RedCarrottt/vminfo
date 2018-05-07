@@ -15,4 +15,4 @@ $ make
   
 ### Result
 * 1 Page = 4KB
-* [Timestamp(us)] [Code Segment Size(Pages)] [Data Segment Size(Pages)] [Stack Size(Pages)] [Shared Library Size(Pages)] [PSS(Pages)]
+* [Timestamp(us)] [Code Segment Size(KB)] [Data Segment Size(KB)] [Stack Size(KB)] [Shared Library Size(KB)] [PSS(KB)]
