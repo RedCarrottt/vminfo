@@ -45,7 +45,7 @@ void helpMsg() {
   printf("    Start: vminfo [process name] [file name] (interval(sec)) -s\n");
   printf("    End: vminfo -e\n");
   printf("Result (1 Page = 4KB):\n");
-  printf("  [Timestamp(us)] [Code Segment Size(Pages)] [Data Segment Size(Pages)] [Stack Size(Pages)] [Shared Library Size(Pages)] [PSS(Pages)]\n");
+  printf("  [Timestamp(us)] [Code Segment Size(KB)] [Data Segment Size(KB)] [Stack Size(KB)] [Shared Library Size(KB)] [PSS(KB)]\n");
 }
 
 int main(int argc, char **argv) {
