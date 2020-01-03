@@ -125,7 +125,7 @@ void ProcessGroup::setProcesses() {
 		// read the result of "ps -A"
 		char buffer[1024];
 		int linenum = 0;
-		while(gets(buffer)) {
+		while(fgets(buffer, 1024, stdin)) {
 			linenum++;
 			if(linenum == 1) continue; // skip first line
 
